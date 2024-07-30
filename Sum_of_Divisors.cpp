@@ -74,15 +74,20 @@ void print(unordered_map<T, V> v) {
 //------------------------------------------------------------------------------------
 
 void solve() {
-    ll a, b;
-    cin >> a >> b;
-    ll ans = 1;
-    while (b > 0) {
-        if (b % 2 == 1) {
-            ans = (ans * a) % MOD;
+    ll n;
+    cin >> n;
+    ll ans = 0;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j * j <= i; j++) {
+            if (i % j == 0) {
+                if (j * j == i) {
+                    ans += j;
+                }
+                else {
+                    ans += j + i / j;
+                }
+            }
         }
-        a = (a * a) % MOD;
-        b /= 2;
     }
     cout << ans << endl;
 }
@@ -90,7 +95,7 @@ void solve() {
 int main() {
     fastio();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) {
         solve();
     }

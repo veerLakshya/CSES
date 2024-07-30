@@ -73,24 +73,41 @@ void print(unordered_map<T, V> v) {
 #define fastio() ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
 //------------------------------------------------------------------------------------
 
+ll const B1 = 5689;
+ll const B2 = 8861;
+
 void solve() {
-    ll a, b;
-    cin >> a >> b;
-    ll ans = 1;
-    while (b > 0) {
-        if (b % 2 == 1) {
-            ans = (ans * a) % MOD;
+    string s, p;
+    cin >> s >> p;
+    int n = s.size(), m = p.size();
+    ll hash1_p = 1, hash2_p = 1;
+    for (int i = 0;i < m;i++) {
+        hash1_p = ((hash1_p * B1) % MOD + (p[i] - 'a' + 1)) % MOD;
+        hash2_p = ((hash2_p * B2) % MOD + p[i] - 'a' + 1) % MOD;
+    }
+    vector<pair<ll, ll>> hashes(n + 1, { 1,1 }), powers(n + 1, { 1,1 });
+    for (int i = 0; i < n; i++) {
+        hashes[i + 1].ff = ((hashes[i].ff * B1) % MOD + s[i] - 'a' + 1) % MOD;
+        hashes[i + 1].ss = ((hashes[i].ss * B2) % MOD + s[i] - 'a' + 1) % MOD;
+        powers[i + 1].ff = (powers[i].ff * B1) % MOD;
+        powers[i + 1].ss = (powers[i].ss * B2) % MOD;
+    }
+    ll ans = 0;
+    for (ll i = m - 1; i < n; i++) {
+        ll hash1 = (hashes[i + 1].ff - (hashes[i - m - 1].ff * powers[i - m + 1].ff) % MOD + MOD) % MOD;
+        ll hash2 = (hashes[i + 1].ss - (hashes[i - m - 1].ss * powers[i - m + 1].ss) % MOD + MOD) % MOD;
+        if (hash1 == hash1_p && hash2 == hash2_p) {
+            ans++;
         }
-        a = (a * a) % MOD;
-        b /= 2;
     }
     cout << ans << endl;
+
 }
 
 int main() {
     fastio();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) {
         solve();
     }

@@ -74,15 +74,16 @@ void print(unordered_map<T, V> v) {
 //------------------------------------------------------------------------------------
 
 void solve() {
-    ll a, b;
-    cin >> a >> b;
-    ll ans = 1;
-    while (b > 0) {
-        if (b % 2 == 1) {
-            ans = (ans * a) % MOD;
+    int n;
+    cin >> n;
+    int ans = 0;
+    for (int i = 1; i * i <= n; i++) {
+        if (n % i == 0) {
+            ans++;
+            if (n / i != i) {
+                ans++;
+            }
         }
-        a = (a * a) % MOD;
-        b /= 2;
     }
     cout << ans << endl;
 }
